@@ -27,10 +27,10 @@ public class DeliveryService {
 	
 	public DeliveryDto start(String driverId, String orderId) {
 		Driver d = driverRepo.getOne(driverId);
-		d.setStatus(d.STATUS_PICKING_UP);
+		d.setStatus(Driver.STATUS_PICKING_UP);
 		driverRepo.save(d);
 		Delivery del = new Delivery();
-		del.setDriverId(driverId);
+		del.setDriver(driverRepo.getOne(driverId));
 		del.setOrderId(orderId);
 		del.setStartTime(Time.valueOf(LocalTime.now()));
 		deliveryRepo.save(del);
@@ -40,8 +40,8 @@ public class DeliveryService {
 
 	public DeliveryDto pickup(String deliveryId) {
 		Delivery del = deliveryRepo.getOne(deliveryId);
-		Driver d = driverRepo.getOne(del.getDriverId());
-		d.setStatus(d.STATUS_DELIVERING);
+		Driver d = driverRepo.getOne(del.getDriver().getId());
+		d.setStatus(Driver.STATUS_DELIVERING);
 		driverRepo.save(d);
 		del.setPickupTime(Time.valueOf(LocalTime.now()));
 		deliveryRepo.save(del);
@@ -51,8 +51,8 @@ public class DeliveryService {
 
 	public DeliveryDto delivered(String deliveryId) {
 		Delivery del = deliveryRepo.getOne(deliveryId);
-		Driver d = driverRepo.getOne(del.getDriverId());
-		d.setStatus(d.STATUS_IDLE);
+		Driver d = driverRepo.getOne(del.getDriver().getId());
+		d.setStatus(Driver.STATUS_IDLE);
 		driverRepo.save(d);
 		del.setDeliverTime(Time.valueOf(LocalTime.now()));
 		deliveryRepo.save(del);
@@ -62,7 +62,7 @@ public class DeliveryService {
 
 	public DriverDto checkIn(String driverId) {
 		Driver d = driverRepo.getOne(driverId);
-		d.setStatus(d.STATUS_IDLE);
+		d.setStatus(Driver.STATUS_IDLE);
 		driverRepo.save(d);
 		DriverDto dto = mapper.mapDriver(d);
 		return dto;
@@ -70,7 +70,7 @@ public class DeliveryService {
 
 	public DriverDto checkOut(String driverId) {
 		Driver d = driverRepo.getOne(driverId);
-		d.setStatus(d.STATUS_OFFLINE);
+		d.setStatus(Driver.STATUS_OFFLINE);
 		driverRepo.save(d);
 		DriverDto dto = mapper.mapDriver(d);
 		return dto;

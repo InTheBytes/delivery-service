@@ -28,11 +28,13 @@ public class Delivery implements Serializable {
 	@Column(name = "delivery_id")
 	private String id;
 	
-	@OneToOne @JoinColumn(name = "order_id")
+	//TODO: TEMPORARY FIX!!! Once Order mapping is integrated, switch back and away from String
+//	@OneToOne @JoinColumn(name = "order_id")
+	@Column
 	private String orderId;
 	
 	@OneToOne @JoinColumn(name = "driver_id")
-	private String driverId;
+	private Driver driver;
 	
 	@Column(name = "start_time")
 	private Time startTime;
@@ -59,12 +61,12 @@ public class Delivery implements Serializable {
 		this.orderId = orderId;
 	}
 
-	public String getDriverId() {
-		return driverId;
+	public Driver getDriver() {
+		return driver;
 	}
 
-	public void setDriverId(String driverId) {
-		this.driverId = driverId;
+	public void setDriver(Driver driver) {
+		this.driver = driver;
 	}
 
 	public Time getStartTime() {
@@ -100,7 +102,7 @@ public class Delivery implements Serializable {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((deliverTime == null) ? 0 : deliverTime.hashCode());
-		result = prime * result + ((driverId == null) ? 0 : driverId.hashCode());
+		result = prime * result + ((driver == null) ? 0 : driver.hashCode());
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		result = prime * result + ((orderId == null) ? 0 : orderId.hashCode());
 		result = prime * result + ((pickupTime == null) ? 0 : pickupTime.hashCode());
@@ -122,10 +124,10 @@ public class Delivery implements Serializable {
 				return false;
 		} else if (!deliverTime.equals(other.deliverTime))
 			return false;
-		if (driverId == null) {
-			if (other.driverId != null)
+		if (driver == null) {
+			if (other.driver != null)
 				return false;
-		} else if (!driverId.equals(other.driverId))
+		} else if (!driver.equals(other.driver))
 			return false;
 		if (id == null) {
 			if (other.id != null)
@@ -152,7 +154,7 @@ public class Delivery implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Delivery [id=" + id + ", orderId=" + orderId + ", driverId=" + driverId + ", startTime=" + startTime
+		return "Delivery [id=" + id + ", orderId=" + orderId + ", driverId=" + driver + ", startTime=" + startTime
 				+ ", pickupTime=" + pickupTime + ", deliverTime=" + deliverTime + "]";
 	}
 	

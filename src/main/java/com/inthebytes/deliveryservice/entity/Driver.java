@@ -32,7 +32,9 @@ public class Driver implements Serializable {
 	@Column(name = "driver_id")
 	private String id;
 	
-	@OneToOne @JoinColumn(name = "user_id")
+	//TODO: TEMPORARY FIX!!! Once Order mapping is integrated, switch back and away from String
+//	@OneToOne @JoinColumn(name = "user_id")
+	@Column
 	private String userId;
 	
 	@Column(name = "vehicle_id")
